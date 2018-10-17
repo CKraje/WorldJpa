@@ -22,10 +22,10 @@ public class CityController {
 
 	@Autowired
 	private CityRepository cityRepo;
-	
+
 	@Autowired
 	private CountryRepository countryRepo;
-	
+
 	@RequestMapping("/cities/list")
 	public String citiesList(@RequestParam("country_code") String countryCode, ModelMap map,
 			HttpServletRequest req) {
@@ -44,7 +44,7 @@ public class CityController {
 	@RequestMapping("cities/delete") 
 	public String deleteCity(@RequestParam("idCity") long idCity,
 			@RequestParam("countryCode") String code, ModelMap map) {
-		City city =cityRepo.findById(idCity);
+		City city =cityRepo.findOne(idCity);
 		String resultMsg = "Errore nell'eliminare la city.";
 		try {
 			cityRepo.delete(city);
@@ -60,15 +60,11 @@ public class CityController {
 			HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		List<Country> listCountries = countryRepo.findAll();
-		Country country = countryRepo.findCountryByCode(code);
-		City city = null;
+		Country country = countryRepo.findOne(code);
+		City city = new City();
 		if(idCity!=0) {
-			city= cityRepo.findById(idCity);
+			city= cityRepo.findOne(idCity);
 			session.setAttribute("city", city);
-		}
-		else {
-			city = new City();
-			city.setId((long) 0);
 		}
 		map.addAttribute("city", city);
 		map.addAttribute("paese", country.getCode());
@@ -88,13 +84,18 @@ public class CityController {
 		city.setPopulation(population);
 		city.setDistrict(district);
 		city.setId(idCity);
-		if(city.getId() ==0	) {										
-			map.addAttribute("message", "Creazione avvenuta con successo!");
+		city = cityRepo.save(city);
+		String message = "Errore nel salvataggio delle informazioni!";
+		if(city.getId()>0) {
+			message = "Informazioni salvate con successo!";
 		}
-		else if(city.getId()!=0){
-			map.addAttribute("message", "Modifica avvenuta con successo!");
-		}
-		cityRepo.save(city);
+		map.addAttribute("message", message);
+		//		if(city.getId() == 0) {										
+		//			map.addAttribute("message", "Creazione avvenuta con successo!");
+		//		}
+		//		else if(city.getId()!=0){
+		//			map.addAttribute("message", "Modifica avvenuta con successo!");
+		//		}
 		return "create-modify-city";
 	}
 

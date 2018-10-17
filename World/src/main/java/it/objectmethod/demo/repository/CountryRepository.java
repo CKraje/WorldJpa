@@ -11,13 +11,9 @@ import it.objectmethod.demo.entity.Country;
 @Repository
 public interface CountryRepository extends JpaRepository<Country, String>{
 
-	public List<Country> findAll();
-
-	@Query(value="SELECT  DISTINCT continent FROM Country",
-			nativeQuery = true)
+	@Query(value="SELECT  DISTINCT continent FROM Country")
 	public List<String> findAllContinents();
 
 	public List<Country> findCountryByContinent(String continent);
 
-	public Country findCountryByCode(String code);
 }
