@@ -19,7 +19,7 @@ import it.objectmethod.demo.repository.CountryRepository;
 
 @Controller
 public class CityController {
-
+// conflitto
 	@Autowired
 	private CityRepository cityRepo;
 
