@@ -11,6 +11,7 @@ import it.objectmethod.demo.entity.City;
 public interface CityRepository extends JpaRepository<City, Long>{
 
 	public List<City> findByNameStartingWith(String name);
+	public List<City> findCityByCodeOrderByNameAsc(String code);
+	public City findById(long id);
 	public List<City> findCityByCode(String code);
-
 }

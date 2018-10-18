@@ -60,6 +60,7 @@ public class CityController {
 			HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		List<Country> listCountries = countryRepo.findAll();
+		session.setAttribute("lista_Countriees", listCountries);
 		Country country = countryRepo.findOne(code);
 		City city = new City();
 		if(idCity!=0) {
@@ -77,7 +78,9 @@ public class CityController {
 			@RequestParam("district_name") String district,
 			@RequestParam("population") int population,
 			@RequestParam("theCountries") String countryCode, @RequestParam("city_id")
-	long idCity,ModelMap map) {
+	long idCity,ModelMap map,HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		List<Country> listCountries =(List<Country>) session.getAttribute("lista_Countriees");
 		City city = new City();
 		city.setName(name);
 		city.setCode(countryCode);
@@ -90,12 +93,9 @@ public class CityController {
 			message = "Informazioni salvate con successo!";
 		}
 		map.addAttribute("message", message);
-		//		if(city.getId() == 0) {										
-		//			map.addAttribute("message", "Creazione avvenuta con successo!");
-		//		}
-		//		else if(city.getId()!=0){
-		//			map.addAttribute("message", "Modifica avvenuta con successo!");
-		//		}
+		map.addAttribute("city", city);
+		map.addAttribute("paese", countryCode);
+		map.addAttribute("lista_Countriees", listCountries);
 		return "create-modify-city";
 	}
 
