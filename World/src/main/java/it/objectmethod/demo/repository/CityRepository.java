@@ -11,7 +11,7 @@ import it.objectmethod.demo.entity.City;
 public interface CityRepository extends JpaRepository<City, Long>{
 
 	//Voglio un conflitto
-	public List<City> findByNameStartingWith(String name);
+	public List<City> findByNameStartingWithOrderByNameAsc(String name);
 	public List<City> findCityByCodeOrderByNameAsc(String code);
 	public List<City> findCityByCode(String code);
 }

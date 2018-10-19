@@ -20,10 +20,6 @@ import it.objectmethod.demo.repository.CountryRepository;
 @Controller
 public class CityController {
 
-// conflitto
-
-// boh
-
 	@Autowired
 	private CityRepository cityRepo;
 
@@ -34,7 +30,7 @@ public class CityController {
 	public String citiesList(@RequestParam("country_code") String countryCode, ModelMap map,
 			HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		List<City> list =cityRepo.findCityByCode(countryCode);
+		List<City> list =cityRepo.findCityByCodeOrderByNameAsc(countryCode);
 		if(countryCode == null) {
 			countryCode = (String) session.getAttribute("country_code");
 		} else {
@@ -106,7 +102,7 @@ public class CityController {
 	@RequestMapping("/cities/search")
 	public String searchCity(@RequestParam("city_Name") String name, ModelMap map,
 			HttpServletRequest req) {
-		List<City> list = cityRepo.findByNameStartingWith(name);
+		List<City> list = cityRepo.findByNameStartingWithOrderByNameAsc(name);
 		map.addAttribute("lista_cities", list);
 		HttpSession session = req.getSession();
 		session.removeAttribute("continent");
